@@ -26,18 +26,36 @@ classifiers = [
 ]
 dependencies = [
   "click",
+  "prompt_toolkit",
+  "gitpython",
+  "cmake",
+  "codechecker",
+  "clang-tidy",
+  "clang-format",
+  "colorama",
+  "rich",
+  "setuptools"
 ]
 
 [project.urls]
-Documentation = "https://github.com/William Born/uncross#readme"
-Issues = "https://github.com/William Born/uncross/issues"
-Source = "https://github.com/William Born/uncross"
+Documentation = "https://github.com/williamkborn/uncross#readme"
+Issues = "https://github.com/williamkborn/uncross/issues"
+Source = "https://github.com/williamkborn/uncross"
 
 [project.scripts]
 uncross = "uncross.cli:uncross"
 
 [tool.hatch.version]
 path = "src/uncross/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "pytest",
+  "pylint",
+  "yapf",
+  "setuptools",
+]
 
 [tool.hatch.envs.types]
 extra-dependencies = [
@@ -63,4 +81,19 @@ exclude_lines = [
   "no cov",
   "if __name__ == .__main__.:",
   "if TYPE_CHECKING:",
+]
+
+[tool.ruff]
+line-length = 99
+
+[tool.ruff.lint]
+ignore = [
+  "FBT001",
+  "FBT002",
+]
+
+[tool.pylint]
+disable = [
+  "too-many-arguments",
+  "redefined-outer-name",
 ]
