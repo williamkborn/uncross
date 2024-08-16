@@ -18,14 +18,15 @@ def get_project_root() -> None:
 
 def project_init_commit(base_path: str, project_name: str) -> None:
     """Initialize git repo and make first commit"""
-    LOGGER.info("creating bare repo at %s ...", base_path)
+    LOGGER.debug("creating bare repo at %s ...", base_path)
     repo = git.Repo.init(base_path)
 
-    LOGGER.info("adding files to repo ...")
+    LOGGER.debug("adding files to repo ...")
     for file in repo.untracked_files:
+        LOGGER.debug("adding %s to repo ...", file)
         repo.index.add(file)
 
     commit_message = f"Project {project_name} initialized with uncross version {__version__}."
 
-    LOGGER.info("commiting ...")
+    LOGGER.debug("commiting ...")
     repo.index.commit(commit_message)

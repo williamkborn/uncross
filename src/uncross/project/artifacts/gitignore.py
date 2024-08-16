@@ -25,5 +25,5 @@ dist/
 
 def create_dot_git_ignore(_name: str, root: str) -> None:
     """Create .git_ignore"""
-    LOGGER.info("creating git_ignore file at %s ...", root)
-    drop_git_ignore(f"{root}/.git_ignore")
+    LOGGER.debug("creating git_ignore file at %s ...", root)
+    drop_git_ignore(f"{root}/.gitignore")

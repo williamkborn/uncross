@@ -62,7 +62,7 @@ def drop_c_header(name: str, path: str) -> None:
 
 def create_c_project(name: str, root: str) -> None:
     """Create an example C project dir structure"""
-    LOGGER.info("creating C project structure at %s ...", root)
+    LOGGER.debug("creating C project structure at %s ...", root)
     os.makedirs(f"{root}/src", exist_ok=True)
     os.makedirs(f"{root}/include", exist_ok=True)
     drop_c_header(name, f"{root}/include/{name.lower()}.h")

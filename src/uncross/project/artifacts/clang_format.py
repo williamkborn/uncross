@@ -20,5 +20,5 @@ def drop_clang_format(path: str) -> None:
 
 def create_dot_clang_format(_name: str, root: str) -> None:
     """Create .clang_format"""
-    LOGGER.info("creating clang format file at %s ...", root)
+    LOGGER.debug("creating clang format file at %s ...", root)
     drop_clang_format(f"{root}/.clang-format")

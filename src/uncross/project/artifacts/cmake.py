@@ -58,7 +58,7 @@ endif()
 
 def create_cmakelists_txt(name: str, root: str) -> None:
     """Create an example cmake C project dir structure"""
-    LOGGER.info("creating cmake C project structure at %s ...", root)
+    LOGGER.debug("creating cmake C project structure at %s ...", root)
     os.makedirs(f"{root}/src", exist_ok=True)
     drop_root_cmakelists_txt(name, f"{root}/CMakeLists.txt")
     drop_src_cmakelists_txt(name, f"{root}/src/CMakeLists.txt")

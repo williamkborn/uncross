@@ -17,14 +17,14 @@ class SeriesPipeline(BasePipeline):
 
         if len(self.groups["base"]) != 0:
             for task in self.groups["base"]:
-                LOGGER.info("running base task %s ...", task.name)
+                LOGGER.debug("running base task %s ...", task.name)
                 task.run()
 
         for name, group in self.groups.items():
             if name == "base":
                 continue
             for task in group:
-                LOGGER.info("running group %s task %s ...", name, task.name)
+                LOGGER.debug("running group %s task %s ...", name, task.name)
                 task.run()
 
-        LOGGER.info("all tasks done")
+        LOGGER.debug("all tasks done")

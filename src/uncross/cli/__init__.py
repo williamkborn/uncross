@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import logging
+import sys
+
 import click
 
 from uncross.__about__ import __version__
@@ -9,6 +12,7 @@ from uncross.build_params import BuildParams
 from uncross.commands.build import build_command
 from uncross.commands.check import check_command
 from uncross.commands.clean import clean_command
+from uncross.commands.download import download_command
 from uncross.commands.fmt import fmt_command
 from uncross.commands.lint import lint_command
 from uncross.commands.new import new_command
@@ -19,13 +23,32 @@ from uncross.task.series_pipeline import SeriesPipeline
 
 LOGGER = make_logger(__name__)
 
+ASCII_ART = (
+    "__   _ _ __   ___ _ __ ___  ___ ___                                         \n"
+    "| | | | '_ \\ / __| '__/ _ \\/ __/ __|                                        \n"
+    "| |_| | | | | (__| | | (_) \\__ \\__ \\                                        \n"
+    "\\___,_|_| |_|\\___|_|  \\___/|___/___/                                        \n"
+)
+
 
 @click.group(
     context_settings={"help_option_names": ["-h", "--help"]}, invoke_without_command=False
 )
 @click.version_option(version=__version__, prog_name="uncross")
-def uncross():
-    """Project build system."""
+@click.option("log_level", "--level", default="INFO", help="Logging level.")
+def uncross(log_level: str):
+    """Entrypoint."""
+    try:
+        log_format = "[%(levelname)s] %(message)s"
+        if log_level == "DEBUG":
+            log_format = "[%(levelname)s] %(filename)s.%(funcName)s:%(lineno)d %(message)s"
+        logging.basicConfig(level=log_level.upper(), format=log_format)
+    except ValueError:
+        click.echo(f"ERROR: '{log_level}' is not a valid logging level.")
+        sys.exit(1)
+
+
+uncross.help = f"{ASCII_ART}\nAn opinionated meta build system for C cross-compilation."
 
 
 @uncross.command("build")
@@ -87,12 +110,12 @@ def build(
     )
 
     if build_all or debug or (not debug and not release):
-        LOGGER.info("building Debug ...")
+        LOGGER.debug("building Debug ...")
         params.build_debug = True
         build_command(SeriesPipeline("build pipeline"), params)
 
     if build_all or release:
-        LOGGER.info("building Release ...")
+        LOGGER.debug("building Release ...")
         params.build_debug = False
         build_command(SeriesPipeline("build pipeline"), params)
 
@@ -157,12 +180,12 @@ def check(
     )
 
     if check_all or debug or (not debug and not release):
-        LOGGER.info("checking Debug ...")
+        LOGGER.debug("checking Debug ...")
         params.build_debug = True
         check_command(SeriesPipeline("build pipeline"), params, open_browser=open_browser)
 
     if check_all or release:
-        LOGGER.info("checking Release ...")
+        LOGGER.debug("checking Release ...")
         params.build_debug = False
         check_command(SeriesPipeline("build pipeline"), params, open_browser=open_browser)
 
@@ -180,6 +203,22 @@ def clean(source_dir: str, build_dir: str):
 
     LOGGER.debug("clean command invoked")
     clean_command(source_dir, build_dir)
+
+
+@uncross.command("download")
+@click.option("arch", "--arch", type=str, default="x86-64", help="Target architecture.")
+@click.option("libc", "--libc", type=str, default="glibc", help="Target libc.")
+@click.option(
+    "status",
+    "--status",
+    type=str,
+    default="stable",
+    help="Target status ('stable', 'bleeding-edge').",
+)
+@click.option("version", "--version", type=str, default="2024.02-1", help="Target version.")
+def download(arch: str, libc: str, status: str, version: str):
+    """Download a toolchain."""
+    download_command(arch, libc, status, version)
 
 
 @uncross.command("fmt")

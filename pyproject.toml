@@ -33,6 +33,7 @@ dependencies = [
   "clang-tidy",
   "clang-format",
   "colorama",
+  "requests",
   "rich",
   "setuptools"
 ]
@@ -102,6 +103,7 @@ line-length = 99
 ignore = [
   "FBT001",
   "FBT002",
+  "TRY400",
 ]
 
 [tool.pylint]

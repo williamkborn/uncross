@@ -20,5 +20,5 @@ def drop_clang_tidy(path: str) -> None:
 
 def create_dot_clang_tidy(_name: str, root: str) -> None:
     """Create .clang_tidy"""
-    LOGGER.info("creating clang tidy file at %s ...", root)
+    LOGGER.debug("creating clang tidy file at %s ...", root)
     drop_clang_tidy(f"{root}/.clang-tidy")

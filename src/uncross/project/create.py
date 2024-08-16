@@ -13,7 +13,7 @@ from uncross.project.artifacts.c_proj import create_c_project
 from uncross.project.artifacts.clang_format import create_dot_clang_format
 from uncross.project.artifacts.clang_tidy import create_dot_clang_tidy
 from uncross.project.artifacts.cmake import create_cmakelists_txt
-from uncross.project.artifacts.git_ignore import create_dot_git_ignore
+from uncross.project.artifacts.gitignore import create_dot_git_ignore
 from uncross.project.artifacts.makefile import create_makefile
 from uncross.task.series_pipeline import SeriesPipeline
 

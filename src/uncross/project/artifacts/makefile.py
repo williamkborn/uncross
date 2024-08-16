@@ -52,6 +52,6 @@ release: lint build-release check-release
 
 def create_makefile(name: str, root: str) -> None:
     """Create makefile at project root"""
-    LOGGER.info("creating cmake C project structure at %s ...", root)
+    LOGGER.debug("creating cmake C project structure at %s ...", root)
     os.makedirs(f"{root}/src", exist_ok=True)
     drop_root_makefile(name, f"{root}/Makefile")

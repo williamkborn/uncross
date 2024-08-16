@@ -19,11 +19,6 @@ if TYPE_CHECKING:
 LOGGER = make_logger(__name__)
 
 
-def task_dummy(name: str, _params: BuildParams) -> None:
-    """Dummy task for testing"""
-    LOGGER.info("task: %s", name)
-
-
 def add_cmake_var_args(args: list, cmake_vars: list[str]) -> None:
     """Add cmake vars to arg list"""
     for var in cmake_vars:
@@ -36,13 +31,13 @@ def add_cmake_var_args(args: list, cmake_vars: list[str]) -> None:
 
 def task_configure_preset(name: str, preset: str, params: BuildParams) -> None:
     """Dummy task for testing"""
-    LOGGER.info("task: %s", name)
+    LOGGER.debug("task: %s", name)
 
     build_mode = "Debug" if params.build_debug else "Release"
     build_dir = f"{params.build_dir}/{build_mode}/presets/{preset}"
     check_file = f"{build_dir}/CMakeCache.txt"
     if os.path.exists(check_file):
-        LOGGER.info("Found %s, skipping configure ...", check_file)
+        LOGGER.debug("Found %s, skipping configure ...", check_file)
         return
 
     args = [
@@ -62,14 +57,14 @@ def task_configure_preset(name: str, preset: str, params: BuildParams) -> None:
 
 def task_configure_toolchain(name: str, toolchain: str, params: BuildParams) -> None:
     """Dummy task for testing"""
-    LOGGER.info("task: %s", name)
+    LOGGER.debug("task: %s", name)
 
     build_mode = "Debug" if params.build_debug else "Release"
     build_dir = f"{params.build_dir}/{build_mode}/toolchains/{toolchain}"
 
     check_file = f"{build_dir}/CMakeCache.txt"
     if os.path.exists(check_file):
-        LOGGER.info("Found %s, skipping configure ...", check_file)
+        LOGGER.debug("Found %s, skipping configure ...", check_file)
         return
 
     args = [
@@ -91,7 +86,7 @@ def task_configure_toolchain(name: str, toolchain: str, params: BuildParams) -> 
 
 def task_build(name: str, build_subdir: str, build_name: str, params: BuildParams) -> None:
     """Build task"""
-    LOGGER.info("task: %s", name)
+    LOGGER.debug("task: %s", name)
 
     build_mode = "Debug" if params.build_debug else "Release"
     args = [
