@@ -1,8 +1,10 @@
 """invoke a subprocess"""
 
+from __future__ import annotations
+
 import multiprocessing
 import subprocess
-from collections.abc import Callable
+from typing import Callable
 
 from uncross.logger import make_logger
 

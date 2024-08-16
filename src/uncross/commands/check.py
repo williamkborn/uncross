@@ -4,10 +4,10 @@ import functools
 import webbrowser
 
 from uncross.build_params import BuildParams
+from uncross.logger import make_logger
 from uncross.programs.code_checker import invoke_code_checker
 from uncross.task.base_pipeline import BasePipeline
 from uncross.task.task import BuildTask
-from uncross.logger import make_logger
 
 LOGGER = make_logger(__name__)
 

@@ -1,11 +1,13 @@
 """lint command"""
 
+from __future__ import annotations
+
 import os
 import sys
 
 from uncross.git.repo import get_project_root
-from uncross.programs.clang_format import invoke_clang_format
 from uncross.logger import make_logger
+from uncross.programs.clang_format import invoke_clang_format
 
 LOGGER = make_logger(__name__)
 

@@ -1,7 +1,7 @@
 """new command"""
 
-from uncross.project.create import create_project
 from uncross.logger import make_logger
+from uncross.project.create import create_project
 
 LOGGER = make_logger(__name__)
 

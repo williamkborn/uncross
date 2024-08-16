@@ -1,6 +1,11 @@
 """Base pipeline class"""
 
-from uncross.task.task import BuildTask
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from uncross.task.task import BuildTask
 
 
 class BasePipeline:

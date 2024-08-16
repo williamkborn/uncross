@@ -5,6 +5,7 @@ import sys
 
 LOG_LEVEL = "DEBUG"
 
+
 def make_logger(name: str) -> logging.Logger:
     """Get Logger and add handler and formatting.
 

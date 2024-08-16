@@ -1,7 +1,7 @@
 """Create .clang_format"""
 
-from uncross.programs.clang_format import invoke_clang_format
 from uncross.logger import make_logger
+from uncross.programs.clang_format import invoke_clang_format
 
 LOGGER = make_logger(__name__)
 

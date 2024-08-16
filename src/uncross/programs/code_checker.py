@@ -1,5 +1,7 @@
 """Handle clang-format invocation"""
 
+from __future__ import annotations
+
 import functools
 import sys
 

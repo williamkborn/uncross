@@ -8,6 +8,7 @@ import rich.tree
 from uncross.build_params import BuildParams
 from uncross.commands.build import build_command
 from uncross.git.repo import project_init_commit
+from uncross.logger import make_logger
 from uncross.project.artifacts.c_proj import create_c_project
 from uncross.project.artifacts.clang_format import create_dot_clang_format
 from uncross.project.artifacts.clang_tidy import create_dot_clang_tidy
@@ -15,7 +16,6 @@ from uncross.project.artifacts.cmake import create_cmakelists_txt
 from uncross.project.artifacts.git_ignore import create_dot_git_ignore
 from uncross.project.artifacts.makefile import create_makefile
 from uncross.task.series_pipeline import SeriesPipeline
-from uncross.logger import make_logger
 
 LOGGER = make_logger(__name__)
 

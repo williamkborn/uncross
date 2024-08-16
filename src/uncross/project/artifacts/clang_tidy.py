@@ -1,7 +1,7 @@
 """Create .clang_tidy"""
 
-from uncross.programs.clang_tidy import invoke_clang_tidy
 from uncross.logger import make_logger
+from uncross.programs.clang_tidy import invoke_clang_tidy
 
 LOGGER = make_logger(__name__)
 

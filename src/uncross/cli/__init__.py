@@ -1,5 +1,7 @@
 """CLI Entrypoint"""
 
+from __future__ import annotations
+
 import click
 
 from uncross.__about__ import __version__
@@ -12,8 +14,8 @@ from uncross.commands.lint import lint_command
 from uncross.commands.new import new_command
 from uncross.commands.release import release_command
 from uncross.git.repo import get_project_root
-from uncross.task.series_pipeline import SeriesPipeline
 from uncross.logger import make_logger
+from uncross.task.series_pipeline import SeriesPipeline
 
 LOGGER = make_logger(__name__)
 
@@ -57,7 +59,7 @@ def build(
 
     if source_dir is None:
         source_dir = get_project_root()
-    
+
     if build_dir is None:
         build_dir = f"{source_dir}/build"
 
@@ -127,7 +129,7 @@ def check(
 
     if source_dir is None:
         source_dir = get_project_root()
-    
+
     if build_dir is None:
         build_dir = f"{source_dir}/build"
 
@@ -172,7 +174,7 @@ def clean(source_dir: str, build_dir: str):
     """Clean build artifacts."""
     if source_dir is None:
         source_dir = get_project_root()
-    
+
     if build_dir is None:
         build_dir = f"{source_dir}/build"
 

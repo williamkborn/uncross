@@ -1,14 +1,20 @@
 """Build command."""
 
+from __future__ import annotations
+
 import functools
 import os
 from multiprocessing import cpu_count
+from typing import TYPE_CHECKING
 
-from uncross.build_params import BuildParams
 from uncross.invoke import invoke_subprocess
-from uncross.task.base_pipeline import BasePipeline
-from uncross.task.task import BuildTask
 from uncross.logger import make_logger
+from uncross.task.task import BuildTask
+
+if TYPE_CHECKING:
+    from uncross.build_params import BuildParams
+    from uncross.task.base_pipeline import BasePipeline
+
 
 LOGGER = make_logger(__name__)
 

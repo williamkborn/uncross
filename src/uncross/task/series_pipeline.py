@@ -1,7 +1,7 @@
 """Pipeline that runs all tasks in series."""
 
-from uncross.task.base_pipeline import BasePipeline
 from uncross.logger import make_logger
+from uncross.task.base_pipeline import BasePipeline
 
 LOGGER = make_logger(__name__)
 
