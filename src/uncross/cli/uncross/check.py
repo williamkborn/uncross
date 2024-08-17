@@ -1,13 +1,22 @@
-"""Build command."""
+"""Check command."""
+
+from __future__ import annotations
 
 import functools
 import webbrowser
+from typing import TYPE_CHECKING
+
+import click
 
 from uncross.build_params import BuildParams
+from uncross.git.repo import get_project_root
 from uncross.logger import make_logger
 from uncross.programs.code_checker import invoke_code_checker
-from uncross.task.base_pipeline import BasePipeline
+from uncross.task.series_pipeline import SeriesPipeline
 from uncross.task.task import BuildTask
+
+if TYPE_CHECKING:
+    from uncross.task.base_pipeline import BasePipeline
 
 LOGGER = make_logger(__name__)
 
@@ -100,3 +109,73 @@ def check_command(pipeline: BasePipeline, params: BuildParams, open_browser: boo
     pipeline.run()
 
     LOGGER.info("check complete")
+
+
+@click.command("check")
+@click.option("-S", "--source-dir", type=str, help="source directory")
+@click.option("-B", "--build-dir", type=str, help="build directory")
+@click.option("-t", "--toolchain", type=str, multiple=True, help="toolchain to invoke")
+@click.option("-p", "--preset", type=str, multiple=True, help="cmake presets to build")
+@click.option("--debug", is_flag=True, required=False, help="to build in debug")
+@click.option("--release", is_flag=True, required=False, help="to build in release")
+@click.option(
+    "check_all",
+    "--all",
+    "-a",
+    is_flag=True,
+    required=False,
+    help="to check both release and debug",
+)
+@click.option(
+    "open_browser", "--open", is_flag=True, required=False, help="open reports in browser"
+)
+def check(
+    source_dir: str,
+    build_dir: str,
+    toolchain: list[str],
+    preset: list[str],
+    debug: bool,
+    release: bool,
+    check_all: bool,
+    open_browser: bool,
+) -> None:
+    """Check project."""
+
+    if source_dir is None:
+        source_dir = get_project_root()
+
+    if build_dir is None:
+        build_dir = f"{source_dir}/build"
+
+    LOGGER.debug("check command invoked with args:")
+    LOGGER.debug("source dir: %s", source_dir)
+    LOGGER.debug("build dir: %s", build_dir)
+    LOGGER.debug("presets: %s", preset)
+
+    if len(toolchain) == 0 and len(preset) == 0:
+        LOGGER.warning("no toolchains or presets provided, building native ...")
+        toolchain = list(toolchain)
+        toolchain.append("native")
+
+    LOGGER.debug("toolchains: %s", toolchain)
+    LOGGER.debug("debug: %s", debug)
+    LOGGER.debug("release: %s", release)
+
+    params = BuildParams(
+        build_dir=build_dir,
+        source_dir=source_dir,
+        build_debug=False,
+        toolchains=toolchain,
+        presets=preset,
+        cmake_vars=[],
+    )
+
+    if check_all or debug or (not debug and not release):
+        LOGGER.debug("checking Debug ...")
+        params.build_debug = True
+        check_command(SeriesPipeline("build pipeline"), params, open_browser=open_browser)
+
+    if check_all or release:
+        LOGGER.debug("checking Release ...")
+        params.build_debug = False
+        check_command(SeriesPipeline("build pipeline"), params, open_browser=open_browser)

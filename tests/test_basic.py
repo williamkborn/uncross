@@ -37,7 +37,7 @@ def test_repo_basic_create_build_check():
     assert os.path.exists(test_src_directory)
     assert os.path.exists(f"{test_src_directory}/.clang-format")
     assert os.path.exists(f"{test_src_directory}/.clang-tidy")
-    assert os.path.exists(f"{test_src_directory}/.git_ignore")
+    assert os.path.exists(f"{test_src_directory}/.gitignore")
     assert os.path.exists(f"{test_src_directory}/CMakeLists.txt")
     assert os.path.exists(f"{test_src_directory}/src/CMakeLists.txt")
     assert os.path.exists(f"{test_src_directory}/src/main.c")

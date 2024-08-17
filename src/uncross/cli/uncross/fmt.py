@@ -1,6 +1,8 @@
 """fmt command"""
 
-from uncross.commands.lint import run_over_c_h_files
+import click
+
+from uncross.cli.uncross.lint import run_over_c_h_files
 from uncross.git.repo import get_project_root
 from uncross.logger import make_logger
 
@@ -15,3 +17,14 @@ def fmt_command(source_dir: str) -> None:
 
     if format_failed:
         raise RuntimeError
+
+
+@click.command("fmt")
+@click.option("-S", "--source-dir", type=str, help="source directory")
+def fmt(source_dir: str) -> None:
+    """Format project."""
+    if source_dir is None:
+        source_dir = get_project_root()
+    LOGGER.debug("fmt command invoked with args:")
+    LOGGER.debug("source dir: %s", source_dir)
+    fmt_command(source_dir)

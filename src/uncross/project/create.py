@@ -6,7 +6,7 @@ import pathlib
 import rich.tree
 
 from uncross.build_params import BuildParams
-from uncross.commands.build import build_command
+from uncross.cli.uncross.build import build_command
 from uncross.git.repo import project_init_commit
 from uncross.logger import make_logger
 from uncross.project.artifacts.c_proj import create_c_project

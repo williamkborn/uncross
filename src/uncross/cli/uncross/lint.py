@@ -5,6 +5,8 @@ from __future__ import annotations
 import os
 import sys
 
+import click
+
 from uncross.git.repo import get_project_root
 from uncross.logger import make_logger
 from uncross.programs.clang_format import invoke_clang_format
@@ -47,3 +49,14 @@ def lint_command(source_dir: str) -> None:
         sys.exit(1)
     else:
         LOGGER.info("NO LINT FOUND")
+
+
+@click.command("lint")
+@click.option("-S", "--source-dir", type=str, help="source directory")
+def lint(source_dir: str) -> None:
+    """Lint code."""
+    if source_dir is None:
+        source_dir = get_project_root()
+    LOGGER.debug("lint command invoked with args:")
+    LOGGER.debug("source dir: %s", source_dir)
+    lint_command(source_dir)
