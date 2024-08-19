@@ -10,7 +10,7 @@ from uncross.logger import make_logger
 LOGGER = make_logger(__name__)
 
 
-def get_project_root() -> None:
+def get_project_root() -> str:
     """Get the root path of the current project"""
     repo = git.Repo(os.path.curdir, search_parent_directories=True)
     return os.path.realpath(repo.working_dir)

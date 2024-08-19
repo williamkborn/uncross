@@ -17,18 +17,25 @@ def download_bootlin_command(arch: str, libc: str, status: str, version: str) ->
     tarball = f"{toolchain_base}.tar.bz2"
     disk_path = f"{Path.home()!s}/.uncross/cache/{tarball}"
     output_path = f"{Path.home()!s}/.uncross/toolchains/{toolchain_base}"
-    LOGGER.debug("downloading %s to %s ...", tarball, disk_path)
-    url = f"https://toolchains.bootlin.com/downloads/releases/toolchains/{arch}/tarballs/{tarball}"
 
-    try:
-        download_file(url, disk_path)
+    if not Path(disk_path).exists():
+        try:
+            LOGGER.debug("Downloading %s to %s ...", tarball, disk_path)
+            url = f"https://toolchains.bootlin.com/downloads/releases/toolchains/{arch}/tarballs/{tarball}"
+            download_file(url, disk_path)
+        except FileNotFoundError:
+            LOGGER.error("toolchain %s not found.", tarball)
+        except ConnectionError:
+            LOGGER.error("Could not connect to toolchains.bootlin.com.")
+    else:
+        LOGGER.info("toolchain tarball found in cache")
+
+    if not Path(output_path).exists():
+        LOGGER.info("extracting ...")
         with tarfile.open(disk_path, mode="r:bz2") as tar:
-            LOGGER.info("extracting ...")
             tar.extractall(path=output_path, filter=None)  # noqa: S202
-    except FileNotFoundError:
-        LOGGER.error("toolchain %s not found.", tarball)
-    except ConnectionError:
-        LOGGER.error("Could not connect to toolchains.bootlin.com.")
+    else:
+        LOGGER.info("toolchain %s already extracted.", toolchain_base)
 
 
 @click.command("bootlin")

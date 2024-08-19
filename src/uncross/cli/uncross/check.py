@@ -4,11 +4,14 @@ from __future__ import annotations
 
 import functools
 import webbrowser
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import click
 
 from uncross.build_params import BuildParams
+from uncross.config.project.parse import parse_project_config
+from uncross.exceptions import FailedSubTaskError
 from uncross.git.repo import get_project_root
 from uncross.logger import make_logger
 from uncross.programs.code_checker import invoke_code_checker
@@ -34,6 +37,11 @@ def task_check_toolchain(name: str, params: BuildParams) -> None:
     build_dir = f"{params.build_dir}/{build_mode}/toolchains/{name}"
 
     compile_commands = f"{build_dir}/compile_commands.json"
+
+    if not Path(compile_commands).exists():
+        LOGGER.error("%s not found.", compile_commands)
+        raise FailedSubTaskError
+
     LOGGER.info("running report on %s", compile_commands)
     args = [
         "CodeChecker",
@@ -49,7 +57,7 @@ def task_check_toolchain(name: str, params: BuildParams) -> None:
     result = invoke_code_checker(args)
     if result not in (0, 2):
         LOGGER.error("CodeChecker failed. (return code %s)", result)
-        raise RuntimeError
+        raise FailedSubTaskError
 
 
 def task_report_toolchain(name: str, params: BuildParams, open_browser: bool) -> None:
@@ -151,6 +159,11 @@ def check(
     LOGGER.debug("source dir: %s", source_dir)
     LOGGER.debug("build dir: %s", build_dir)
     LOGGER.debug("presets: %s", preset)
+
+    config = parse_project_config()
+
+    if len(toolchain) == 0 and "uncross" in config and "toolchain" in config["uncross"]:
+        toolchain = list(set(list(toolchain) + list(config["uncross"]["toolchain"].keys())))
 
     if len(toolchain) == 0 and len(preset) == 0:
         LOGGER.warning("no toolchains or presets provided, building native ...")

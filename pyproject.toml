@@ -28,14 +28,19 @@ dependencies = [
   "click",
   "prompt_toolkit",
   "gitpython",
-  "cmake",
   "codechecker",
-  "clang-tidy",
-  "clang-format",
   "colorama",
   "requests",
   "rich",
-  "setuptools"
+  "setuptools",
+  "toml"
+]
+
+[project.optional-dependencies]
+tools = [
+  "cmake",
+  "clang-tidy",
+  "clang-format",
 ]
 
 [project.urls]

@@ -10,10 +10,11 @@ from typing import TYPE_CHECKING
 import click
 
 from uncross.build_params import BuildParams
-from uncross.exceptions import FailedSubTaskError
+from uncross.config.project.parse import parse_project_config
+from uncross.exceptions import FailedSubTaskError, ToolchainMissingError
 from uncross.git.repo import get_project_root
-from uncross.invoke import invoke_subprocess
 from uncross.logger import make_logger
+from uncross.programs.cmake import invoke_cmake
 from uncross.task.series_pipeline import SeriesPipeline
 from uncross.task.task import BuildTask
 from uncross.toolchains import get_toolchain_file_by_name
@@ -59,7 +60,7 @@ def task_configure_preset(name: str, preset: str, params: BuildParams) -> None:
 
     add_cmake_var_args(args, params.cmake_vars)
 
-    if invoke_subprocess(args) != 0:
+    if invoke_cmake(args) != 0:
         raise FailedSubTaskError
 
 
@@ -89,7 +90,7 @@ def task_configure_toolchain(
 
     add_cmake_var_args(args, params.cmake_vars)
 
-    if invoke_subprocess(args) != 0:
+    if invoke_cmake(args) != 0:
         raise FailedSubTaskError
 
 
@@ -106,7 +107,7 @@ def task_build(name: str, build_subdir: str, build_name: str, params: BuildParam
         f"{cpu_count() + 1}",
     ]
 
-    if invoke_subprocess(args) != 0:
+    if invoke_cmake(args) != 0:
         raise FailedSubTaskError
 
 
@@ -126,6 +127,9 @@ def build_toolchain(name: str, pipeline: BasePipeline, params: BuildParams) -> N
     toolchain_file = None
     if name != "native":
         toolchain_file = get_toolchain_file_by_name(name)
+
+        if toolchain_file is None:
+            raise ToolchainMissingError(name)
     configure_work = functools.partial(
         task_configure_toolchain, configure_name, name, params, toolchain_file
     )
@@ -187,8 +191,13 @@ def build(
 
     LOGGER.debug("source dir: %s", source_dir)
     LOGGER.debug("build dir: %s", build_dir)
-    LOGGER.debug("define cmake varivariablesvariablesables: %s", define_cmake_var)
+    LOGGER.debug("define cmake variables: %s", define_cmake_var)
     LOGGER.debug("presets: %s", preset)
+
+    config = parse_project_config()
+
+    if len(toolchain) == 0 and "uncross" in config and "toolchain" in config["uncross"]:
+        toolchain = list(set(list(toolchain) + list(config["uncross"]["toolchain"].keys())))
 
     if len(toolchain) == 0 and len(preset) == 0:
         LOGGER.warning("no toolchains or presets provided, building native ...")

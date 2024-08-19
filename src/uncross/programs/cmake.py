@@ -15,14 +15,14 @@ from uncross.logger import make_logger
 LOGGER = make_logger(__name__)
 
 
-def invoke_clang_tidy(args: list[str], stdout_replace: str = "") -> int:
+def invoke_cmake(args: list[str], stdout_replace: str = "") -> int:
     """invoke clang tidy"""
     try:
-        from clang_tidy import clang_tidy
+        from cmake import cmake
 
-        to_run = functools.partial(subtask_redirect_stdout, args, clang_tidy, stdout_replace)
+        to_run = functools.partial(subtask_redirect_stdout, args, cmake, stdout_replace)
     except ImportError:
-        check_program("clang-tidy")
+        check_program("cmake")
         task = functools.partial(invoke_subprocess, args)
         to_run = functools.partial(subtask_redirect_stdout, args, task, stdout_replace)
 

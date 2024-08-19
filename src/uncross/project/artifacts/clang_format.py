@@ -10,7 +10,8 @@ def drop_clang_format(path: str) -> None:
     """Drop clang format file"""
     args = [
         "clang-format",
-        "--style={ BasedOnStyle: Microsoft, ColumnLimit: 80, SortIncludes: false }",
+        "--style",
+        "{ BasedOnStyle: Microsoft, ColumnLimit: 80, SortIncludes: false }",
         "--dump-config",
     ]
 

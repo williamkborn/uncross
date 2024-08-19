@@ -27,27 +27,32 @@ def drop_src_cmakelists_txt(name: str, path: str) -> None:
     """Create project header file"""
 
     src_cmakelists_txt_content = f"""
-add_executable({name} main.c)
-target_include_directories({name} PRIVATE ${{CMAKE_CURRENT_SOURCE_DIR}}/../include)
+set(TARGET_NAME {name}_${{CMAKE_SYSTEM_NAME}}_${{CMAKE_SYSTEM_PROCESSOR}})
+
+add_executable(${{TARGET_NAME}} main.c)
+target_include_directories(${{TARGET_NAME}} PRIVATE ${{CMAKE_CURRENT_SOURCE_DIR}}/../include)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   set_target_properties(
-    {name}
+    ${{TARGET_NAME}}
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${{CMAKE_SOURCE_DIR}}/debug/bin
   )
-  target_compile_options({name} PRIVATE -O3 -g -Wall -Wextra -Wpedantic -fsanitize=address)
-  target_link_options({name} PRIVATE -fsanitize=address)
+  target_compile_options(${{TARGET_NAME}} PRIVATE -O3 -g -Wall -Wextra -Wpedantic)
+  if (${{CMAKE_SYSTEM_PROCESSOR}} STREQUAL "x86_64")
+    target_compile_options(${{TARGET_NAME}} PRIVATE -fsanitize=address)
+    target_link_options(${{TARGET_NAME}} PRIVATE -fsanitize=address)
+  endif()
 endif()
 
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
   set_target_properties(
-    {name}
+    ${{TARGET_NAME}}
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${{CMAKE_SOURCE_DIR}}/release/bin
   )
-  target_compile_options({name} PRIVATE -O3 -Wall -Wextra -Wpedantic -s)
-  target_link_options({name} PRIVATE -s)
+  target_compile_options(${{TARGET_NAME}} PRIVATE -O3 -Wall -Wextra -Wpedantic -s)
+  target_link_options(${{TARGET_NAME}} PRIVATE -s)
 endif()
 
 """

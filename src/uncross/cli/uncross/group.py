@@ -9,9 +9,11 @@ from uncross.__about__ import __version__
 from uncross.cli.uncross.build import build
 from uncross.cli.uncross.check import check
 from uncross.cli.uncross.clean import clean
+from uncross.cli.uncross.config.group import config
 from uncross.cli.uncross.fmt import fmt
 from uncross.cli.uncross.lint import lint
 from uncross.cli.uncross.new import new
+from uncross.cli.uncross.project.group import project
 from uncross.cli.uncross.release import release
 from uncross.cli.uncross.toolchain.group import toolchain
 from uncross.logger import make_logger
@@ -48,8 +50,10 @@ uncross.help = f"{ASCII_ART}\nAn opinionated meta build system for C cross-compi
 uncross.add_command(build)
 uncross.add_command(check)
 uncross.add_command(clean)
+uncross.add_command(config)
 uncross.add_command(fmt)
 uncross.add_command(lint)
 uncross.add_command(new)
+uncross.add_command(project)
 uncross.add_command(release)
 uncross.add_command(toolchain)

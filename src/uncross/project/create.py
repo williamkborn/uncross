@@ -15,6 +15,7 @@ from uncross.project.artifacts.clang_tidy import create_dot_clang_tidy
 from uncross.project.artifacts.cmake import create_cmakelists_txt
 from uncross.project.artifacts.gitignore import create_dot_git_ignore
 from uncross.project.artifacts.makefile import create_makefile
+from uncross.project.artifacts.uncross import create_uncross_toml
 from uncross.task.series_pipeline import SeriesPipeline
 
 LOGGER = make_logger(__name__)
@@ -72,6 +73,7 @@ def create_project(name: str, source_dir: str, build_project: bool, git: bool) -
     create_cmakelists_txt(name, source_dir)
     create_dot_git_ignore(name, source_dir)
     create_makefile(name, source_dir)
+    create_uncross_toml(name, source_dir)
     if build_project:
         params = BuildParams(
             build_dir=f"{source_dir}/build",

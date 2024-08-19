@@ -12,33 +12,33 @@ def drop_root_makefile(_name: str, path: str) -> None:
 
     root_makefile_content = """
 .POSIX:
-BUILDTOOL=uncross
+UNCROSS=uncross
 
 all: debug
 
 build-debug:
-\t$(BUILDTOOL) build --debug
+\t$(UNCROSS) build --debug
 
 build-release:
-\t$(BUILDTOOL) build --release
+\t$(UNCROSS) build --release
 
 check-debug: build-debug
-\t$(BUILDTOOL) check --debug
+\t$(UNCROSS) check --debug
 
 check-release: build-release
-\t$(BUILDTOOL) check --release
+\t$(UNCROSS) check --release
 
 clean:
-\t$(BUILDTOOL) clean
+\t$(UNCROSS) clean
 
 debug: fmt build-debug check-debug
 
 format: fmt
 fmt:
-\t$(BUILDTOOL) fmt
+\t$(UNCROSS) fmt
 
 lint:
-\t$(BUILDTOOL) lint
+\t$(UNCROSS) lint
 
 release: lint build-release check-release
 

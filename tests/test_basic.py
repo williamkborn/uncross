@@ -42,13 +42,14 @@ def test_repo_basic_create_build_check():
     assert os.path.exists(f"{test_src_directory}/src/CMakeLists.txt")
     assert os.path.exists(f"{test_src_directory}/src/main.c")
     assert os.path.exists(f"{test_src_directory}/include/test_project.h")
+    assert os.path.exists(f"{test_src_directory}/uncross.toml")
 
     run_uncross_test(
         ["uncross", "build", "-S", test_src_directory, "-B", test_build_directory, "--all"]
     )
     assert os.path.exists(f"{test_src_directory}/build")
-    assert os.path.exists(f"{test_src_directory}/release/bin/test_project")
-    assert os.path.exists(f"{test_src_directory}/debug/bin/test_project")
+    assert os.path.exists(f"{test_src_directory}/release/bin/test_project_Linux_x86_64")
+    assert os.path.exists(f"{test_src_directory}/debug/bin/test_project_Linux_x86_64")
 
     run_uncross_test(
         ["uncross", "check", "-S", test_src_directory, "-B", test_build_directory, "--all"]
