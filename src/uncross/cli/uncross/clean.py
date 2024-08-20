@@ -1,5 +1,7 @@
 """clean command"""
 
+import contextlib
+import os
 import shutil
 
 import click
@@ -21,6 +23,9 @@ def clean_command(project_root: str, build_dir: str) -> None:
     shutil.rmtree(debug_dir, ignore_errors=True)
     LOGGER.debug("removing release dir: %s ...", release_dir)
     shutil.rmtree(release_dir, ignore_errors=True)
+    LOGGER.debug("removing release tarball ...")
+    with contextlib.suppress(FileNotFoundError):
+        os.remove("release.tar.gz")
 
 
 @click.command("clean")

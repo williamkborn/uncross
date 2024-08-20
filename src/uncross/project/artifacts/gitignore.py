@@ -12,6 +12,7 @@ def drop_git_ignore(path: str) -> None:
 .vscode/
 build/
 release/
+release.tar.gz
 debug/
 __pycache__/
 dist/

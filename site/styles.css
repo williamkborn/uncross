@@ -1,0 +1,43 @@
+body {
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: black;
+    color: rgb(0, 255, 0);
+}
+
+p {
+    white-space: pre;
+    margin-left: 100px;
+}
+
+header {
+    background-color: black;
+    padding: 10px;
+    text-align: center;
+}
+
+header a {
+    color:  rgb(0, 255, 0);
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+}
+
+header a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    padding: 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: black;
+    color: rgb(0, 255, 0);
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+

@@ -9,7 +9,7 @@ from uncross.cli.uncross.toolchain.register.group import toolchain_register
 
 @click.group("toolchain")
 def toolchain() -> None:
-    """toolchain commands"""
+    """Toolchain management commands."""
 
 
 toolchain.add_command(toolchain_download)

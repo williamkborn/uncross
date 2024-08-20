@@ -19,7 +19,7 @@ def get_project_root(search_path: str = ".") -> str:
         LOGGER.warning(
             "current directory is not in a git repo,"
             "uncross works best when the project is "
-            "commited at the root of a git repo."
+            "committed at the root of a git repo."
         )
         return os.path.realpath(os.curdir)
 
@@ -36,5 +36,5 @@ def project_init_commit(base_path: str, project_name: str) -> None:
 
     commit_message = f"Project {project_name} initialized with uncross version {__version__}."
 
-    LOGGER.debug("commiting ...")
+    LOGGER.debug("committing ...")
     repo.index.commit(commit_message)
