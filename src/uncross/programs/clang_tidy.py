@@ -18,7 +18,7 @@ LOGGER = make_logger(__name__)
 def invoke_clang_tidy(args: list[str], stdout_replace: str = "") -> int:
     """invoke clang tidy"""
     try:
-        from clang_tidy import clang_tidy
+        from clang_tidy import clang_tidy  # pylint: disable=import-outside-toplevel
 
         to_run = functools.partial(subtask_redirect_stdout, args, clang_tidy, stdout_replace)
     except ImportError:

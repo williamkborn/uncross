@@ -109,6 +109,7 @@ ignore = [
   "FBT001",
   "FBT002",
   "TRY400",
+  "S101",
 ]
 
 [tool.pylint]

@@ -33,16 +33,20 @@ def run_over_c_h_files(source_dir: str, args: list[str]) -> bool:
     return lint_found
 
 
-def lint_command(source_dir: str) -> None:
+def lint_command(source_dir: str | None) -> None:
     """lint code"""
     LOGGER.info("linting .c and .h files in %s", source_dir)
     args = [
         "clang-format",
         "--dry-run",
         "-Werror",
-        f"--style=file:{get_project_root()}/.clang-format",
     ]
-    lint_found = run_over_c_h_files(source_dir, args)
+    if source_dir is None:
+        args.append(f"--style=file:{get_project_root()}/.clang-format")
+        lint_found = run_over_c_h_files(get_project_root(), args)
+    else:
+        args.append(f"--style=file:{source_dir}/.clang-format")
+        lint_found = run_over_c_h_files(source_dir, args)
 
     if lint_found:
         LOGGER.error("LINT FOUND")
@@ -55,8 +59,6 @@ def lint_command(source_dir: str) -> None:
 @click.option("-S", "--source-dir", type=str, help="source directory")
 def lint(source_dir: str) -> None:
     """Lint code."""
-    if source_dir is None:
-        source_dir = get_project_root()
     LOGGER.debug("lint command invoked with args:")
     LOGGER.debug("source dir: %s", source_dir)
     lint_command(source_dir)

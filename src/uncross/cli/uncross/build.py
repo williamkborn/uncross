@@ -194,7 +194,7 @@ def build(
     LOGGER.debug("define cmake variables: %s", define_cmake_var)
     LOGGER.debug("presets: %s", preset)
 
-    config = parse_project_config()
+    config = parse_project_config(search_path=source_dir)
 
     if len(toolchain) == 0 and "uncross" in config and "toolchain" in config["uncross"]:
         toolchain = list(set(list(toolchain) + list(config["uncross"]["toolchain"].keys())))

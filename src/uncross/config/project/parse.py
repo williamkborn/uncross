@@ -10,9 +10,9 @@ from uncross.logger import make_logger
 LOGGER = make_logger(__name__)
 
 
-def parse_project_config() -> dict:
+def parse_project_config(search_path: str = ".") -> dict:
     """Parse project config"""
-    config_path = Path(get_project_root()) / "uncross.toml"
+    config_path = Path(get_project_root(search_path=search_path)) / "uncross.toml"
 
     if not config_path.exists():
         return {}

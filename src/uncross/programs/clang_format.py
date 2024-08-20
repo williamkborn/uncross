@@ -18,7 +18,7 @@ LOGGER = make_logger(__name__)
 def invoke_clang_format(args: list[str], stdout_replace: str = "") -> int:
     """invoke clang format"""
     try:
-        from clang_format import clang_format
+        from clang_format import clang_format  # pylint: disable=import-outside-toplevel
 
         to_run = functools.partial(subtask_redirect_stdout, args, clang_format, stdout_replace)
     except ImportError:

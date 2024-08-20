@@ -18,7 +18,7 @@ LOGGER = make_logger(__name__)
 def invoke_cmake(args: list[str], stdout_replace: str = "") -> int:
     """invoke clang tidy"""
     try:
-        from cmake import cmake
+        from cmake import cmake  # pylint: disable=import-outside-toplevel
 
         to_run = functools.partial(subtask_redirect_stdout, args, cmake, stdout_replace)
     except ImportError:

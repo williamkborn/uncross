@@ -21,7 +21,11 @@ def download_bootlin_command(arch: str, libc: str, status: str, version: str) ->
     if not Path(disk_path).exists():
         try:
             LOGGER.debug("Downloading %s to %s ...", tarball, disk_path)
-            url = f"https://toolchains.bootlin.com/downloads/releases/toolchains/{arch}/tarballs/{tarball}"
+            url = (
+                "https://toolchains.bootlin.com/"
+                "downloads/releases/toolchains/"
+                f"{arch}/tarballs/{tarball}"
+            )
             download_file(url, disk_path)
         except FileNotFoundError:
             LOGGER.error("toolchain %s not found.", tarball)
