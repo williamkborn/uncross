@@ -10,7 +10,7 @@ The core intent is rapid prototyping and rapid delivery of small embedded system
 
 ## Why uncross?
 
-A project that uses uncross should largely look like any CMake project. Currently, the only intended deviation at the source level is a configuration file, `uncross.toml`, at the root of a project. In the future, and source level plugin and caching directory will be supported. In most circumstances, `uncross` should be drop-in compatable with existing projects that use CMake. `uncross` is not intended to adopt a large amount of logic for sake of compatibility with every edge-case use of CMake. However, failure to build an existing CMake project is considered a bug when the unsupported behavior is a reasonable "base case" feature of CMake.
+A project that uses uncross should largely look like any CMake project. Currently, the only intended deviation at the source level is a configuration file, `uncross.toml`, at the root of a project. In the future, and source level plugin and caching directory will be supported. In most circumstances, `uncross` should be drop-in compatible with existing projects that use CMake. `uncross` is not intended to adopt a large amount of logic for sake of compatibility with every edge-case use of CMake. However, failure to build an existing CMake project is considered a bug when the unsupported behavior is a reasonable "base case" feature of CMake.
 
 Connecting various toolchains to a build system is a core task for embedded systems programing. CMake is a popular build system for defining builds in a portable manner. While CMake itself solves a large majority of problems in this space, it is still common to observe numerous utility scripts and scaffolding in large embedded projects. Each team will solve the same task in many different ways. These scripts take developer time and energy to implement and maintain.
 
@@ -40,3 +40,5 @@ We welcome source contributions and pull requests.
 We do ask that any feature work is supported by a firm justification of how the addition will apply to a larger body of projects and use cases. We are happy to look at your C/C++ project source if you are willing to share it to support these additions.
 
 Bug fixes are greatly appreciated and will always be rapidly reviewed and merged as time allows.
+
+This book and the website at uncross.dev are part of the project git repository. Any feature work will be expected to update corresponding documentation prior to merge.

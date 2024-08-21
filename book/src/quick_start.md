@@ -85,13 +85,13 @@ The `debug` and `release` directories are a creation of `uncross`. The behavior 
 
 ## CodeChecker
 
-`uncross` automates the creation of HTML reports with `CodeChecker` using a complation database from CMake. To run the report and automatically open it in a browser, run:
+`uncross` automates the creation of HTML reports with `CodeChecker` using a compilation database from CMake. To run the report and automatically open it in a browser, run:
 
 ```
 uncross check --open
 ```
 
-Running the above command without the `--open` flag will not open a brower window, and the files will be available under the `release` or `debug` directories. The `check` command takes the same flags as `build` to choose the build mode.
+Running the above command without the `--open` flag will not open a browser window, and the files will be available under the `release` or `debug` directories. The `check` command takes the same flags as `build` to choose the build mode.
 
 ## Linting and Formatting
 

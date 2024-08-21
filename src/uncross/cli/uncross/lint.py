@@ -6,6 +6,7 @@ import os
 import sys
 
 import click
+import git
 
 from uncross.git.repo import get_project_root
 from uncross.logger import make_logger
@@ -14,8 +15,8 @@ from uncross.programs.clang_format import invoke_clang_format
 LOGGER = make_logger(__name__)
 
 
-def run_over_c_h_files(source_dir: str, args: list[str]) -> bool:
-    """run for each c/h file"""
+def run_over_c_h_files_find(source_dir: str | None, args: list[str]) -> bool:
+    """Run over all files using a find-like behavior."""
     lint_found = False
     for dirpath, _, filenames in os.walk(source_dir):
         if "build" in dirpath or "__pycache__" in dirpath or "deps" in dirpath:
@@ -33,9 +34,41 @@ def run_over_c_h_files(source_dir: str, args: list[str]) -> bool:
     return lint_found
 
 
+def run_over_c_h_files_git(source_dir: str | None, args: list[str]) -> bool:
+    """Run over all files by walking git tree."""
+    lint_found = False
+
+    repo = git.Repo(source_dir)
+
+    staged_files = repo.index.diff("HEAD")
+    staged_files = [item.a_path for item in staged_files if item.a_path.endswith((".c", ".h"))]
+
+    committed_files = [
+        item.abspath
+        for item in repo.head.commit.tree.traverse()
+        if item.abspath.endswith((".c", ".h"))
+    ]
+
+    for file in staged_files + committed_files:
+        LOGGER.debug("running clang-format on %s", file)
+        file_args = [file]
+        if invoke_clang_format(args + file_args) != 0:
+            lint_found = True
+
+    return lint_found
+
+
+def run_over_c_h_files(source_dir: str | None, args: list[str]) -> bool:
+    """run for each c/h file"""
+    try:
+        return run_over_c_h_files_git(source_dir, args)
+    except git.exc.InvalidGitRepositoryError:
+        return run_over_c_h_files_find(".", args)
+
+
 def lint_command(source_dir: str | None) -> None:
     """lint code"""
-    LOGGER.info("linting .c and .h files in %s", source_dir)
+    LOGGER.info("linting .c and .h files ...")
     args = [
         "clang-format",
         "--dry-run",
