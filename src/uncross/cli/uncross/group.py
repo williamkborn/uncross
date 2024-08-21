@@ -6,6 +6,7 @@ import sys
 import click
 
 from uncross.__about__ import __version__
+from uncross.cli.uncross.autocompletion.group import autocompletion
 from uncross.cli.uncross.build import build
 from uncross.cli.uncross.check import check
 from uncross.cli.uncross.clean import clean
@@ -47,6 +48,7 @@ def uncross(log_level: str):
 
 
 uncross.help = f"{ASCII_ART}\nAn opinionated meta build system for C cross-compilation."
+uncross.add_command(autocompletion)
 uncross.add_command(build)
 uncross.add_command(check)
 uncross.add_command(clean)

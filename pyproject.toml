@@ -25,6 +25,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
+  "auto-click-auto",
   "click",
   "prompt_toolkit",
   "gitpython",
