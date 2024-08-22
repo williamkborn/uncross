@@ -35,10 +35,10 @@ def subtask_redirect_stdout(args: list[str], task: Callable, stdout_replace: str
 
 def invoke_subprocess(args: list[str]) -> int:
     """invoke a subprocess"""
-    args = [f'"{arg}"' for arg in args]
-    command = " ".join(args)
-    LOGGER.debug("running command: %s", command)
-    process = subprocess.run(["/bin/sh", "-c", command], shell=False, check=False)
+    check_program(args[0])
+    args[0] = shutil.which(args[0])
+    LOGGER.debug("running command: %s", args)
+    process = subprocess.run(args, shell=False, check=False)
     return process.returncode
 
 

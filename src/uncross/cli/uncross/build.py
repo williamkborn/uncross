@@ -90,6 +90,17 @@ def task_configure_toolchain(
 
     add_cmake_var_args(args, params.cmake_vars)
 
+    config = parse_project_config()
+
+    if isinstance(
+        config.get("uncross", {}).get("toolchain", {}).get(toolchain, {}).get("defines", None),
+        dict,
+    ):
+        toolchain_vars = []
+        for key, val in config["uncross"]["toolchain"][toolchain]["defines"].items():
+            toolchain_vars.append(f"{key}={val}")
+        add_cmake_var_args(args, toolchain_vars)
+
     if invoke_cmake(args) != 0:
         raise FailedSubTaskError
 
