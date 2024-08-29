@@ -1,5 +1,7 @@
 """Create a new project"""
 
+from __future__ import annotations
+
 import os
 import pathlib
 

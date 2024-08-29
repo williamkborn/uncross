@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 from uncross.logger import make_logger
@@ -45,7 +46,7 @@ def find_toolchain_file(location: str, toolchain: str) -> Path | None:
     if not path.exists():
         return None
 
-    for loc, _, files in path.walk():
+    for loc, _, files in os.walk(str(path)):
         for item in files:
             if item in possibles:
                 LOGGER.debug("found: %s", item)
